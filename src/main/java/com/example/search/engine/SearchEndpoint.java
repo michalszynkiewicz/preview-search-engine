@@ -22,15 +22,14 @@ public class SearchEndpoint {
     @Inject
     PageStorage pageStorage;
 
-    @Stream("search-terms")
     @Inject
-    Emitter<String> searchTermsEmitter;
+    SearchTermEmitter emitter;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public Collection<String> search(@QueryParam("query") String query, @QueryParam("userId") String userId) {
 
-        searchTermsEmitter.send(String.format("%s|%s", query, userId));
+        emitter.emit(query, userId);
 
         Set<String> keywords = new HashSet<>(asList(query.split("[^\\w]+")));
         return pageStorage.search(keywords);
