@@ -27,7 +27,7 @@ public class SeachEndpoint {
                                @QueryParam("userId") String userId) {
         String message = String.format("%s|%s", userId, query);
 
-
+        queryEmitter.send(message);
         List<String> keywords = Arrays.stream(query.split("[^\\w]+"))
               .collect(Collectors.toList());
 
